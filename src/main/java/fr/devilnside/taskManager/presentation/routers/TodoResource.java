@@ -25,6 +25,8 @@ public class TodoResource {
     UseCase.Create<Todo> create;
     @Inject
     UseCase.FindAll<Todo> findAll;
+    @Inject
+    UseCase.Find<Todo> find;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -50,4 +52,13 @@ public class TodoResource {
         return findAll.execute();
     }
 
+    @Path("/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Blocking
+    @Operation(summary = "GET specific todo by id",
+            description = "Returns specific todo by id.")
+    public CompletionStage<Todo> getTodo(Long id) {
+        return find.execute(id);
+    }
 }

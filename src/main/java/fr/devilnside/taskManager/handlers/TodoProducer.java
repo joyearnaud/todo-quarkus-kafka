@@ -3,6 +3,7 @@ package fr.devilnside.taskManager.handlers;
 import fr.devilnside.taskManager.domain.entities.Todo;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Message;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -13,7 +14,7 @@ public class TodoProducer {
     @Inject @Channel("todos-out")
     Emitter<Todo> emitter;
 
-    public CompletionStage<Void> create(Todo todo) {
-         return emitter.send(todo);
+    public CompletionStage<Void> create(Message<Todo> todo) {
+         return emitter.send(todo.getPayload());
     }
 }

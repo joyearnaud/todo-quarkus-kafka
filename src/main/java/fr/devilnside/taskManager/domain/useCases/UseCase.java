@@ -10,7 +10,7 @@ public interface UseCase {
         CompletionStage<Void> execute(E entity);
     }
     interface Find<E extends PanacheEntity> {
-        CompletionStage<E> execute();
+        CompletionStage<E> execute(Long id);
     }
 
     interface FindAll<E extends PanacheEntity> {
