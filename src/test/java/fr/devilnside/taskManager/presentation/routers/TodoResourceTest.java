@@ -1,5 +1,7 @@
-package org.acme.panache;
+package fr.devilnside.taskManager.presentation.routers;
 
+import fr.devilnside.taskManager.domain.entities.Task;
+import fr.devilnside.taskManager.domain.entities.Todo;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.test.junit.QuarkusTest;
@@ -70,7 +72,7 @@ class TodoResourceTest {
             .post("/todos")
         .then()
             .log().all()
-            .statusCode(Response.Status.ACCEPTED.getStatusCode())
+            .statusCode(Response.Status.CREATED.getStatusCode())
         ;
 
 //        // 5. Retrieves the in-memory source to send message

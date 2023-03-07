@@ -1,4 +1,4 @@
-package org.acme.panache;
+package fr.devilnside.taskManager.domain.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 

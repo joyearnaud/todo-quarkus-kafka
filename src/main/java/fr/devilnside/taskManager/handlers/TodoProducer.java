@@ -1,5 +1,6 @@
-package org.acme.panache;
+package fr.devilnside.taskManager.handlers;
 
+import fr.devilnside.taskManager.domain.entities.Todo;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
@@ -12,7 +13,7 @@ public class TodoProducer {
     @Inject @Channel("todos-out")
     Emitter<Todo> emitter;
 
-    public CompletionStage<Void> createTodo(Todo todo) {
+    public CompletionStage<Void> create(Todo todo) {
          return emitter.send(todo);
     }
 }
