@@ -3,7 +3,6 @@ package org.acme.panache;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.test.junit.QuarkusTest;
-import io.smallrye.common.annotation.Blocking;
 import io.smallrye.reactive.messaging.providers.connectors.InMemoryConnector;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySink;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySource;
@@ -51,11 +50,13 @@ class TodoResourceTest {
     @Order(1)
     @Transactional
     void testPostTodos() {
+        final Task task = new Task();
+        task.name = "ta1";
         final Todo todo = new Todo();
         todo.title = "tu1";
         todo.description = "desc1";
         todo.date = new Date();
-        todo.tasks = Collections.singletonList("task1");
+        todo.tasks = Collections.singletonList(task);
         todo.tags = Collections.singletonList("tag1");
 
         // 4. Send messages from ressource:
@@ -89,11 +90,13 @@ class TodoResourceTest {
     @Order(2)
     @Transactional
     void testGetTodos() {
+        final Task task = new Task();
+        task.name = "ta1";
         final Todo todo = new Todo();
         todo.title = "tu2";
         todo.description = "desc1";
         todo.date = new Date();
-        todo.tasks = Collections.singletonList("task1");
+        todo.tasks = Collections.singletonList(task);
         todo.tags = Collections.singletonList("tag1");
 
         InMemorySource<Todo> todos = connector.source("todos-in");

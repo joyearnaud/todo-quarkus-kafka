@@ -1,23 +1,27 @@
 package org.acme.panache;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.smallrye.common.constraint.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-
 @Entity
+@Table(name = "Todos")
 public class Todo extends PanacheEntity {
 
     @NotBlank(message="Title may not be blank")
     public String title;
     public String description;
     public Date date;
-    @ElementCollection
-    public List<String> tasks;
+    @OneToMany(targetEntity = Task.class,
+//            mappedBy = "todo",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    public List<Task> tasks = new ArrayList<>();
     @ElementCollection
     public List<String> tags;
 }

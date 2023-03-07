@@ -1,9 +1,13 @@
 package org.acme.panache;
 
 import io.smallrye.common.annotation.Blocking;
+import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.ws.rs.*;
@@ -15,8 +19,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 @Path("/todos")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+@OpenAPIDefinition(info = @Info(title = "todos API", version = "1.0"))
 public class TodoResource {
 
     private final Logger logger = Logger.getLogger(TodoConsumer.class);
@@ -25,9 +28,16 @@ public class TodoResource {
     Validator validator;
     @Inject
     TodoService service;
+    @Inject
+    TodoStorage storage;
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Blocking
+    @Transactional
+    @Operation(summary = "POST an todo",
+            description = "Create a single todo based on JSON body")
     public CompletionStage<Response> send(Todo todo) {
         Set<ConstraintViolation<Todo>> validate = validator.validate(todo);
 
@@ -39,12 +49,16 @@ public class TodoResource {
                         return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), validate.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(";"))).build();
                     }
                 })
-                .exceptionally(throwable -> Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+                .exceptionally(throwable -> Response.status(Response.Status.INTERNAL_SERVER_ERROR).build())
+                ;
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Blocking
+    @Operation(summary = "GET all todos",
+            description = "Returns all todos.")
     public List<Todo> getAllTodos() {
-        return Todo.listAll();
+        return storage.findAllTodos();
     }
 }
