@@ -14,7 +14,7 @@ public class TodoProducer {
     @Inject @Channel("todos-out")
     Emitter<Todo> emitter;
 
-    public CompletionStage<Void> create(Message<Todo> todo) {
-         return emitter.send(todo.getPayload());
+    public CompletionStage<Void> create(Todo todo) {
+         return emitter.send(todo);
     }
 }
