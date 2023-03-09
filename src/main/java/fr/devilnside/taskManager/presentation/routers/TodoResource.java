@@ -33,21 +33,15 @@ public class TodoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
     @Transactional
-    @Operation(summary = "POST a todo",
-            description = "Create a single todo based on JSON body")
+    @Operation(summary = "POST a todo", description = "Create a single todo based on JSON body")
     public CompletionStage<Response> send(@RequestBody @Valid Todo todo) {
-
-        return create.execute(todo)
-                .thenApply(result -> Response.status(Response.Status.CREATED.getStatusCode()).build())
-                .exceptionally(throwable -> Response.status(Response.Status.INTERNAL_SERVER_ERROR).build())
-                ;
+        return create.execute(todo).thenApply(result -> Response.status(Response.Status.CREATED.getStatusCode()).build()).exceptionally(throwable -> Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
-    @Operation(summary = "GET all todos",
-            description = "Returns all todos.")
+    @Operation(summary = "GET all todos", description = "Returns all todos.")
     public CompletionStage<List<Todo>> getAllTodos() {
         return findAll.execute();
     }
@@ -56,8 +50,7 @@ public class TodoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
-    @Operation(summary = "GET specific todo by id",
-            description = "Returns specific todo by id.")
+    @Operation(summary = "GET specific todo by id", description = "Returns specific todo by id.")
     public CompletionStage<Todo> getTodo(Long id) {
         return find.execute(id);
     }

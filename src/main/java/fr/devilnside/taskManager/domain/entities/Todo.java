@@ -13,16 +13,14 @@ import java.util.List;
 @Table(name = "Todos")
 public class Todo extends PanacheEntity {
 
-    @NotBlank(message="Title may not be blank")
+    @NotBlank(message = "Title may not be blank")
     public String title;
     public String description;
     public Date date;
     @Valid
     @OneToMany(targetEntity = Task.class,
 //            mappedBy = "todo",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
+            cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<Task> tasks = new ArrayList<>();
     @Valid
     @ElementCollection

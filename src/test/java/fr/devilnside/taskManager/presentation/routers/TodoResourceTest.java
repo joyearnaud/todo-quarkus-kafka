@@ -62,18 +62,7 @@ class TodoResourceTest {
         todo.tags = Collections.singletonList("tag1");
 
         // 4. Send messages from ressource:
-        given()
-            .body(todo)
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-            .log().all()
-        .when()
-            .body(todo)
-            .post("/todos")
-        .then()
-            .log().all()
-            .statusCode(Response.Status.CREATED.getStatusCode())
-        ;
+        given().body(todo).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).log().all().when().body(todo).post("/todos").then().log().all().statusCode(Response.Status.CREATED.getStatusCode());
 
 //        // 5. Retrieves the in-memory source to send message
 //        InMemorySource<Todo> todos = connector.source("todos-in");
@@ -104,16 +93,7 @@ class TodoResourceTest {
         InMemorySource<Todo> todos = connector.source("todos-in");
         todos.send(todo);
 
-        given()
-            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-            .log().all()
-        .when()
-            .get("/todos")
-        .then()
-            .log().all()
-            .statusCode(Response.Status.OK.getStatusCode())
-            .body("[0].title", is("tu2"))
-        ;
+        given().header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).log().all().when().get("/todos").then().log().all().statusCode(Response.Status.OK.getStatusCode()).body("[0].title", is("tu2"));
     }
 
     @Test
