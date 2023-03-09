@@ -38,10 +38,16 @@ class TodoResourceTest {
     @BeforeEach
     public void setup() {
         todo = new Todo();
+        Todo todo2 = new Todo();
         todos = new ArrayList<>();
 
-        todo.title = "todo_title";
+        todo.id = 2L;
+        todo2.id = 4L;
+        todo.title = "todo_title_1";
+        todo2.title = "todo_title_2";
+
         todos.add(todo);
+        todos.add(todo2);
 
         Mockito.when(create.execute(isA(Todo.class))).thenReturn(CompletableFuture.completedFuture(null));
         Mockito.when(find.execute(isA(Long.class))).thenReturn(CompletableFuture.completedFuture(todo));
@@ -54,7 +60,7 @@ class TodoResourceTest {
 
         Response response = create.toCompletableFuture().get();
 
-        Assertions.assertEquals(201, response.getStatus());
+        Assertions.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
         Assertions.assertNull(response.getEntity());
     }
 
@@ -64,17 +70,17 @@ class TodoResourceTest {
 
         Response response = findAll.toCompletableFuture().get();
 
-        Assertions.assertEquals(200, response.getStatus());
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals(todos, response.getEntity());
     }
 
     @Test
     void findTodo() throws ExecutionException, InterruptedException {
-        CompletionStage<Response> find = resource.findTodo(2L);
+        CompletionStage<Response> find = resource.findTodo(todo.id);
 
         Response response = find.toCompletableFuture().get();
 
-        Assertions.assertEquals(200, response.getStatus());
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals(todo, response.getEntity());
     }
 }
