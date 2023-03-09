@@ -1,7 +1,7 @@
 package fr.devilnside.taskManager.presentation.routers;
 
 import fr.devilnside.taskManager.domain.entities.Todo;
-import fr.devilnside.taskManager.domain.useCases.UseCase;
+import fr.devilnside.taskManager.domain.useCases.UseCases;
 import io.smallrye.common.annotation.Blocking;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -19,13 +19,12 @@ import java.util.concurrent.CompletionStage;
 @Path("/todos")
 @OpenAPIDefinition(info = @Info(title = "todos API", version = "1.0"))
 public class TodoResource extends ResourceFunc {
-
     @Inject
-    UseCase.Create<Todo> create;
+    UseCases.Create<Todo> create;
     @Inject
-    UseCase.FindAll<Todo> findAll;
+    UseCases.FindAll<Todo> findAll;
     @Inject
-    UseCase.Find<Todo> find;
+    UseCases.Find<Todo> find;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -44,7 +43,7 @@ public class TodoResource extends ResourceFunc {
     @Blocking
     @Operation(summary = "GET all todos", description = "Returns all todos.")
     public CompletionStage<Response> findAllTodos() {
-        return findAll.execute()
+        return findAll.execute(null)
                 .thenApply(getFuncRes(Response.Status.OK))
                 .exceptionally(throwableResponseFunction);
     }

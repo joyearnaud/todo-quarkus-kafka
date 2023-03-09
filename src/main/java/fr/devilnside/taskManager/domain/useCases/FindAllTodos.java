@@ -10,12 +10,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
-public class FindAllTodos implements UseCase.FindAll<Todo> {
+public class FindAllTodos implements UseCases.FindAll<Todo> {
     @Inject
     Repository<Todo> repository;
 
     @Override
-    public CompletionStage<List<Todo>> execute() {
+    public CompletionStage<List<Todo>> execute(Void entity) {
         return CompletableFuture.completedStage(repository.findAll().stream().toList());
     }
 }

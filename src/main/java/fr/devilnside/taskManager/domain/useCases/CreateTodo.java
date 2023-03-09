@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
-public class CreateTodo implements UseCase.Create<Todo> {
+public class CreateTodo implements UseCases.Create<Todo> {
     @Inject
     TodoProducer producer;
 

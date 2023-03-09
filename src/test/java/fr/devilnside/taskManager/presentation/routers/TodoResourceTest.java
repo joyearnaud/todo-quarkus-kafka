@@ -1,7 +1,7 @@
 package fr.devilnside.taskManager.presentation.routers;
 
 import fr.devilnside.taskManager.domain.entities.Todo;
-import fr.devilnside.taskManager.domain.useCases.UseCase;
+import fr.devilnside.taskManager.domain.useCases.UseCases;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isA;
 
 @QuarkusTest
@@ -26,11 +25,11 @@ class TodoResourceTest {
     @Inject
     TodoResource resource;
     @InjectMock
-    UseCase.Create<Todo> create;
+    UseCases.Create<Todo> create;
     @InjectMock
-    UseCase.Find<Todo> find;
+    UseCases.Find<Todo> find;
     @InjectMock
-    UseCase.FindAll<Todo> findAll;
+    UseCases.FindAll<Todo> findAll;
 
     private Todo todo;
     private List<Todo> todos;
@@ -51,7 +50,7 @@ class TodoResourceTest {
 
         Mockito.when(create.execute(isA(Todo.class))).thenReturn(CompletableFuture.completedFuture(null));
         Mockito.when(find.execute(isA(Long.class))).thenReturn(CompletableFuture.completedFuture(todo));
-        Mockito.when(findAll.execute()).thenReturn(CompletableFuture.completedFuture(todos));
+        Mockito.when(findAll.execute(null)).thenReturn(CompletableFuture.completedFuture(todos));
     }
 
     @Test
