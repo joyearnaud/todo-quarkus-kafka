@@ -3,9 +3,7 @@ package fr.devilnside.taskManager.presentation.routers;
 import fr.devilnside.taskManager.domain.entities.Todo;
 import fr.devilnside.taskManager.domain.useCases.UseCases;
 import io.smallrye.common.annotation.Blocking;
-import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import javax.inject.Inject;
@@ -17,7 +15,6 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.CompletionStage;
 
 @Path("/todos")
-@OpenAPIDefinition(info = @Info(title = "todos API", version = "1.0"))
 public class TodoResource extends ResourceFunc {
     @Inject
     UseCases.Create<Todo> create;
