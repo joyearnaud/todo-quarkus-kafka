@@ -14,12 +14,11 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 @Path("/todos")
 @OpenAPIDefinition(info = @Info(title = "todos API", version = "1.0"))
-public class TodoResource {
+public class TodoResource extends ResourceFunc {
 
     @Inject
     UseCase.Create<Todo> create;
@@ -34,16 +33,20 @@ public class TodoResource {
     @Blocking
     @Transactional
     @Operation(summary = "POST a todo", description = "Create a single todo based on JSON body")
-    public CompletionStage<Response> send(@RequestBody @Valid Todo todo) {
-        return create.execute(todo).thenApply(result -> Response.status(Response.Status.CREATED.getStatusCode()).build()).exceptionally(throwable -> Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+    public CompletionStage<Response> createTodo(@RequestBody @Valid Todo todo) {
+        return create.execute(todo)
+                .thenApply(getFuncRes(Response.Status.CREATED))
+                .exceptionally(throwableResponseFunction);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
     @Operation(summary = "GET all todos", description = "Returns all todos.")
-    public CompletionStage<List<Todo>> getAllTodos() {
-        return findAll.execute();
+    public CompletionStage<Response> findAllTodos() {
+        return findAll.execute()
+                .thenApply(getFuncRes(Response.Status.OK))
+                .exceptionally(throwableResponseFunction);
     }
 
     @Path("/{id}")
@@ -51,7 +54,9 @@ public class TodoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
     @Operation(summary = "GET specific todo by id", description = "Returns specific todo by id.")
-    public CompletionStage<Todo> getTodo(Long id) {
-        return find.execute(id);
+    public CompletionStage<Response> findTodo(Long id) {
+        return find.execute(id)
+                .thenApply(getFuncRes(Response.Status.OK))
+                .exceptionally(throwableResponseFunction);
     }
 }
