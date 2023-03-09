@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
-public class GetTodo implements UseCase.Find<Todo> {
+public class FindTodo implements UseCase.Find<Todo> {
     @Inject
     Repository<Todo> repository;
 
